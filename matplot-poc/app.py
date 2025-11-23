@@ -14,7 +14,7 @@ votos_barreiras = [130, 50, 22, 10] # Improvised numbers summing to 212
 # Dados sobre Apoio à Melhoria (Conclusão)
 labels_apoio = ['A Favor da Inclusão/Reforma', 'Satisfeitos com Atual']
 tamanhos_apoio = [203, 9] # 96% a favor
-cores_apoio = ['#2196F3', '#E0E0E0'] # Azul destaque e Cinza
+cores_apoio = ['#2196F3', "#FF0022"] # Azul destaque e Cinza
 
 # --- PLOT 1: Perfil dos Respondentes (Pizza) ---
 plt.figure(figsize=(8, 6))
