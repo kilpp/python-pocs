@@ -1,46 +1,40 @@
+"""
+Main application for generating accessibility survey visualizations.
+
+This script generates three key visualizations:
+1. Respondent profile distribution (pie chart)
+2. Identified accessibility barriers (bar chart)
+3. Project support consensus (pie chart)
+"""
 import matplotlib
-matplotlib.use('Agg')  # Use non-GUI backend
-import matplotlib.pyplot as plt
+from config import PlotConfig
+from data_models import RespondentProfile, BarrierData, SupportData
+from visualizations import ChartGenerator
 
-# Configuração dos Dados
-labels_perfil = ['Clientes (187)', 'Equipe/Fornecedores (25)']
-tamanhos_perfil = [187, 25]
-cores_perfil = ['#4CAF50', '#FFC107'] # Verde e Amarelo
 
-# Dados Improvisados para a Questão de Acessibilidade (Barreira)
-barreiras = ['Escadas/Falta de Rampa', 'Banheiro Inadequado', 'Circulação Interna', 'Nenhuma']
-votos_barreiras = [130, 50, 22, 10] # Improvised numbers summing to 212
+def setup_matplotlib():
+    """Configure matplotlib with appropriate backend."""
+    matplotlib.use(PlotConfig.BACKEND)
 
-# Dados sobre Apoio à Melhoria (Conclusão)
-labels_apoio = ['A Favor da Inclusão/Reforma', 'Satisfeitos com Atual']
-tamanhos_apoio = [203, 9] # 96% a favor
-cores_apoio = ['#2196F3', "#FF0022"] # Azul destaque e Cinza
 
-# --- PLOT 1: Perfil dos Respondentes (Pizza) ---
-plt.figure(figsize=(8, 6))
-plt.pie(tamanhos_perfil, labels=labels_perfil, autopct='%1.1f%%', startangle=140, colors=cores_perfil)
-plt.title('Perfil dos Respondentes (Total: 212)')
-plt.axis('equal') 
-plt.savefig('perfil_respondentes.png', dpi=300, bbox_inches='tight')
-print('Saved: perfil_respondentes.png')
-plt.close()
+def main():
+    """Generate all accessibility survey visualizations."""
+    # Setup
+    setup_matplotlib()
+    generator = ChartGenerator()
+    
+    # Load data (using default data for now)
+    respondent_data = RespondentProfile.create_default()
+    barrier_data = BarrierData.create_default()
+    support_data = SupportData.create_default()
+    
+    # Generate visualizations
+    print("Generating accessibility survey visualizations...")
+    generator.generate_respondent_profile_chart(respondent_data)
+    generator.generate_barriers_chart(barrier_data)
+    generator.generate_support_chart(support_data)
+    print("All visualizations generated successfully!")
 
-# --- PLOT 2: Principais Barreiras Identificadas (Barras) ---
-plt.figure(figsize=(10, 6))
-plt.bar(barreiras, votos_barreiras, color='#FF5722')
-plt.title('Maior Dificuldade Encontrada (Infraestrutura)')
-plt.xlabel('Barreira Citada')
-plt.ylabel('Número de Pessoas')
-plt.grid(axis='y', alpha=0.3)
-plt.savefig('barreiras_identificadas.png', dpi=300, bbox_inches='tight')
-print('Saved: barreiras_identificadas.png')
-plt.close()
 
-# --- PLOT 3: Consenso sobre Melhoria (Pizza) ---
-plt.figure(figsize=(8, 6))
-plt.pie(tamanhos_apoio, labels=labels_apoio, autopct='%1.1f%%', startangle=90, colors=cores_apoio, explode=(0.1, 0))
-plt.title('Consenso: Apoio ao Projeto de Acessibilidade')
-plt.axis('equal')
-plt.savefig('consenso_apoio.png', dpi=300, bbox_inches='tight')
-print('Saved: consenso_apoio.png')
-plt.close()
+if __name__ == '__main__':
+    main()
